@@ -30,6 +30,12 @@ jobs:
             vcpkg_triplet: x64-linux-clang
             build_dir: build/linux-x64-clang-rwdi
             ctest_exclude: 'PoseidonTests - OAL -'
+          - name: macOS RelWithDebInfo
+            os: macos-26-intel
+            preset: darwin-x64-clang-rwdi
+            vcpkg_triplet: x64-darwin-clang
+            build_dir: build/darwin-x64-clang-rwdi
+            ctest_exclude: 'PoseidonTests - OAL -'
           - name: Windows RelWithDebInfo
             os: windows-2022
             preset: win-x64-clang-rwdi
@@ -63,6 +69,12 @@ jobs:
             libxkbcommon-dev \
             libwayland-dev \
             wayland-protocols
+
+      - name: Install macOS homebrew packages
+        if: runner.os == 'macOS'
+        run: |
+          brew install \
+            clang-format
 
       - name: Setup LLVM and Clang
         if: runner.os == 'Windows'
