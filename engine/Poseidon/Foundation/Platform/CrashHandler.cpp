@@ -115,7 +115,9 @@ void InstallCrashHandler(const char*)
 #include <fcntl.h>
 #include <execinfo.h>
 #include <sys/resource.h>
+#if __linux__
 #include <link.h>
+#endif
 
 namespace Poseidon::Foundation
 {
@@ -261,6 +263,7 @@ void handler(int sig, siginfo_t* info, void* /*ucontext*/)
 void captureBuildId()
 {
     g_buildId[0] = '\0';
+#if __linux__
     dl_iterate_phdr(
         [](struct dl_phdr_info* info, size_t, void*) -> int
         {
@@ -296,6 +299,7 @@ void captureBuildId()
             return 1; // only inspect the main executable (the first entry)
         },
         nullptr);
+#endif // __linux__
 }
 } // namespace
 
