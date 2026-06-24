@@ -30,12 +30,14 @@ jobs:
             vcpkg_triplet: x64-linux-clang
             build_dir: build/linux-x64-clang-rwdi
             ctest_exclude: 'PoseidonTests - OAL -'
+            binaries_upload: 'Linux-x64-rwdi'
           - name: Windows RelWithDebInfo
             os: windows-2022
             preset: win-x64-clang-rwdi
             vcpkg_triplet: x64-windows-clang
             build_dir: build/win-x64-clang-rwdi
             ctest_exclude: 'PoseidonTests - (OAL -|PAAEncoder -|Image - Save to \.paa|World state file format --|PreviewImage - saveToFile writes|PreviewImageRGB - saveToFile writes)'
+            binaries_upload: 'Windows-x64-rwdi'
 
     steps:
       - name: Checkout
@@ -112,6 +114,18 @@ jobs:
 
       - name: Build
         run: cmake --build ${{ matrix.build_dir }} --parallel 2
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.binaries_upload }}
+          path: |
+            ${{ matrix.build_dir }}/apps/cwr/Game/PoseidonGame
+            ${{ matrix.build_dir }}/apps/cwr/Game/PoseidonGame.exe
+            ${{ matrix.build_dir }}/apps/cwr/GameDemo/PoseidonGameDemo
+            ${{ matrix.build_dir }}/apps/cwr/GameDemo/PoseidonGameDemo.exe
+            ${{ matrix.build_dir }}/apps/cwr/Server/PoseidonServer
+            ${{ matrix.build_dir }}/apps/cwr/Server/PoseidonServer.exe
 
       - name: Test
         shell: pwsh
