@@ -88,7 +88,7 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2.23
         with:
           variant: ccache
-          key: ${{ runner.os }}-${{ matrix.preset }}-pch
+          key: ${{ runner.os }}-${{ matrix.preset }}-pch-${{ hashFiles('engine/Poseidon/Foundation/PoseidonPCH.hpp', 'engine/Poseidon/Foundation/platform.hpp') }}
           max-size: 1G
 
       - name: Setup CMake and Ninja
