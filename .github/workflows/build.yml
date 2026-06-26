@@ -30,7 +30,13 @@ jobs:
             vcpkg_triplet: x64-linux-clang
             build_dir: build/linux-x64-clang-rwdi
             ctest_exclude: 'PoseidonTests - OAL -'
-          - name: macOS RelWithDebInfo
+          - name: macOS arm64 RelWithDebInfo
+            os: macos-26
+            preset: darwin-arm64-clang-rwdi
+            vcpkg_triplet: arm64-darwin-clang
+            build_dir: build/darwin-arm64-clang-rwdi
+            ctest_exclude: 'PoseidonTests - OAL -'
+          - name: macOS x64 RelWithDebInfo
             os: macos-26-intel
             preset: darwin-x64-clang-rwdi
             vcpkg_triplet: x64-darwin-clang
