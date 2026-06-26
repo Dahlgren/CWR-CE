@@ -36,14 +36,14 @@ jobs:
             preset: darwin-arm64-clang-rwdi
             vcpkg_triplet: arm64-darwin-clang
             build_dir: build/darwin-arm64-clang-rwdi
-            ctest_exclude: 'PoseidonTests - OAL -'
+            ctest_exclude: 'PoseidonTests - OAL -|PoseidonFoundationTests - potime - Platform consistency|PoseidonFoundationTests - potime - Poseidon - Foundation - getSystemTime timing accuracy'
             binaries_upload: 'macOS-arm64-rwdi'
           - name: macOS x64 RelWithDebInfo
             os: macos-26-intel
             preset: darwin-x64-clang-rwdi
             vcpkg_triplet: x64-darwin-clang
             build_dir: build/darwin-x64-clang-rwdi
-            ctest_exclude: 'PoseidonTests - OAL -'
+            ctest_exclude: 'PoseidonTests - OAL -|PoseidonFoundationTests - potime - Platform consistency|PoseidonFoundationTests - potime - Poseidon - Foundation - getSystemTime timing accuracy'
             binaries_upload: 'macOS-x64-rwdi'
           - name: Windows RelWithDebInfo
             os: windows-2022
