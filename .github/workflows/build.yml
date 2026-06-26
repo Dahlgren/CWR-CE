@@ -36,7 +36,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       CWR_PRESET: linux-${{ matrix.arch }}-clang-rwdi
-      CWR_VCPKG_TRIPLET: ${{ matrix.arch }}-linux-clang
       CWR_BUILD_DIR: build/linux-${{ matrix.arch }}-clang-rwdi
       CWR_CTEST_EXCLUDE: 'PoseidonTests - OAL -'
       CWR_DIST_DIR: dist/${{ matrix.arch }}-linux-rwdi
@@ -55,7 +54,6 @@ jobs:
         uses: ./.github/actions/build-cwr
         with:
           preset: ${{ env.CWR_PRESET }}
-          vcpkg-triplet: ${{ env.CWR_VCPKG_TRIPLET }}
           build-dir: ${{ env.CWR_BUILD_DIR }}
           ctest-exclude: ${{ env.CWR_CTEST_EXCLUDE }}
 
@@ -93,7 +91,6 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       CWR_PRESET: linux-x64-clang-${{ matrix.sanitizer }}
-      CWR_VCPKG_TRIPLET: x64-linux-clang-${{ matrix.sanitizer }}
       CWR_BUILD_DIR: build/linux-x64-clang-${{ matrix.sanitizer }}
 
     steps:
@@ -104,7 +101,6 @@ jobs:
         uses: ./.github/actions/build-cwr
         with:
           preset: ${{ env.CWR_PRESET }}
-          vcpkg-triplet: ${{ env.CWR_VCPKG_TRIPLET }}
           build-dir: ${{ env.CWR_BUILD_DIR }}
           run-tests: 'false'
           ccache-max-size: '500M'
@@ -120,7 +116,6 @@ jobs:
     runs-on: macos-26
     env:
       CWR_PRESET: macos-${{ matrix.arch }}-clang-rwdi
-      CWR_VCPKG_TRIPLET: ${{ matrix.arch }}-macos-clang
       CWR_BUILD_DIR: build/macos-${{ matrix.arch }}-clang-rwdi
       CWR_CTEST_EXCLUDE: 'PoseidonTests - OAL -|PoseidonFoundationTests - potime - Platform consistency|PoseidonFoundationTests - potime - Poseidon - Foundation - getSystemTime timing accuracy|PoseidonFoundationTests - potime - SLEEP_MS macro'
       CWR_DIST_DIR: dist/${{ matrix.arch }}-macos-rwdi
@@ -139,7 +134,6 @@ jobs:
         uses: ./.github/actions/build-cwr
         with:
           preset: ${{ env.CWR_PRESET }}
-          vcpkg-triplet: ${{ env.CWR_VCPKG_TRIPLET }}
           build-dir: ${{ env.CWR_BUILD_DIR }}
           ctest-exclude: ${{ env.CWR_CTEST_EXCLUDE }}
 
@@ -175,7 +169,6 @@ jobs:
     runs-on: windows-2022
     env:
       CWR_PRESET: win-x64-clang-rwdi
-      CWR_VCPKG_TRIPLET: x64-windows-clang
       CWR_BUILD_DIR: build/win-x64-clang-rwdi
       CWR_CTEST_EXCLUDE: 'PoseidonTests - (OAL -|PAAEncoder -|Image - Save to \.paa|World state file format --|PreviewImage - saveToFile writes|PreviewImageRGB - saveToFile writes)'
       CWR_DIST_DIR: dist/x64-win-rwdi
@@ -194,7 +187,6 @@ jobs:
         uses: ./.github/actions/build-cwr
         with:
           preset: ${{ env.CWR_PRESET }}
-          vcpkg-triplet: ${{ env.CWR_VCPKG_TRIPLET }}
           build-dir: ${{ env.CWR_BUILD_DIR }}
           ctest-exclude: ${{ env.CWR_CTEST_EXCLUDE }}
 
@@ -408,7 +400,6 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       STEAMRT4_PRESET: linux-x64-steamrt4
-      STEAMRT4_VCPKG_TRIPLET: x64-linux-clang
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -433,25 +424,13 @@ jobs:
           restore-keys: |
             ccache-SteamRT4-${{ env.STEAMRT4_PRESET }}-
 
-      - name: Restore SteamRT4 vcpkg binary cache
-        uses: actions/cache@v4
-        with:
-          path: .vcpkg-bincache/${{ env.STEAMRT4_VCPKG_TRIPLET }}
-          key: vcpkg-SteamRT4-${{ env.STEAMRT4_VCPKG_TRIPLET }}-${{ hashFiles('vcpkg.json', 'vcpkg-configuration.json', 'cmake/vcpkg-triplets/**', 'cmake/vcpkg-overlay-ports/**') }}
-          restore-keys: |
-            vcpkg-SteamRT4-${{ env.STEAMRT4_VCPKG_TRIPLET }}-
-
       - name: Build inside SteamRT4 container
         run: |
           set -o pipefail
           mkdir -p \
-            "${{ github.workspace }}/tmp/steamrt4-ccache" \
-            "${{ github.workspace }}/.vcpkg-bincache/${{ env.STEAMRT4_VCPKG_TRIPLET }}"
+            "${{ github.workspace }}/tmp/steamrt4-ccache"
           docker run --rm \
             -e OFPR_TARGETS=all \
-            -e VCPKG_BINARY_SOURCES="clear;files,/work/ofpr/.vcpkg-bincache/${{ env.STEAMRT4_VCPKG_TRIPLET }},readwrite" \
-            -e VCPKG_DEFAULT_BINARY_CACHE="/work/ofpr/.vcpkg-bincache/${{ env.STEAMRT4_VCPKG_TRIPLET }}" \
-            -e VCPKG_DEFAULT_TRIPLET="${{ env.STEAMRT4_VCPKG_TRIPLET }}" \
             -v "${{ github.workspace }}:/work/ofpr" \
             cwr-steamrt4:latest 2>&1 | tee steamrt4-build.log
 

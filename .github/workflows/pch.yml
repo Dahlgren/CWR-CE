@@ -21,9 +21,7 @@ jobs:
         uses: ./.github/actions/build-cwr
         with:
           preset: linux-x64-clang
-          vcpkg-triplet: x64-linux-clang
           build-dir: build/linux-x64-clang
           run-tests: 'false'
           use-ccache: 'false'
-          use-vcpkg-binary-cache: 'false'
           extra-cmake-args: '-DPOSEIDON_DISABLE_PCH=ON'

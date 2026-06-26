@@ -11,7 +11,6 @@ RELEASE_MODE="${OFPR_RELEASE:-0}"
 HOME_DIR="${OFPR_HOME:-$REPO_DIR/tmp/steamrt4-home}"
 BUILD_DIR="$REPO_DIR/build/$PRESET"
 TRIDENT_DIR="$REPO_DIR/engine/Trident"
-SEED_VCPKG_ROOT="${STEAMRT_VCPKG_SEED:-/opt/vcpkg-seed}"
 PARALLEL_LEVEL="${OFPR_PARALLEL:-$(nproc)}"
 CCACHE_DIR="${OFPR_CCACHE_DIR:-$REPO_DIR/tmp/steamrt4-ccache}"
 
@@ -62,35 +61,12 @@ export CCACHE_DIR
 export CCACHE_BASEDIR="$REPO_DIR"
 export CCACHE_NOHASHDIR=true
 
-VCPKG_BASELINE="$(sed -n 's/.*"builtin-baseline"[[:space:]]*:[[:space:]]*"\([0-9a-fA-F]*\)".*/\1/p' "$REPO_DIR/vcpkg.json" | head -n 1)"
-
-vcpkg_has_baseline() {
-    local root="$1"
-    [ -z "$VCPKG_BASELINE" ] || git -c safe.directory="$root" -C "$root" cat-file -e "$VCPKG_BASELINE:versions/baseline.json" >/dev/null 2>&1
-}
-
-if [ ! -f "$VCPKG_ROOT/vcpkg" ] || [ -f "$VCPKG_ROOT/.git/shallow" ] || ! vcpkg_has_baseline "$VCPKG_ROOT"; then
-    if ! vcpkg_has_baseline "$SEED_VCPKG_ROOT"; then
-        echo "error: vcpkg seed cannot resolve builtin-baseline '$VCPKG_BASELINE'; rebuild the SteamRT image" >&2
-        exit 1
-    fi
-    mkdir -p "$VCPKG_ROOT"
-    find "$VCPKG_ROOT" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-    cp -a "$SEED_VCPKG_ROOT/." "$VCPKG_ROOT/"
-fi
-
-export PATH="$VCPKG_ROOT:$PATH"
-
 cd "$REPO_DIR"
 
 read -r -a TARGETS <<< "$TARGETS_STRING"
 
 if [ "$#" -gt 0 ]; then
     exec "$@"
-fi
-
-if [ -f "$BUILD_DIR/CMakeCache.txt" ] && ! grep -Fq "$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" "$BUILD_DIR/CMakeCache.txt"; then
-    rm -rf "$BUILD_DIR"
 fi
 
 if command -v ccache >/dev/null 2>&1 && [ -f "$BUILD_DIR/CMakeCache.txt" ] && ! grep -Fq "CMAKE_C_COMPILER_LAUNCHER:UNINITIALIZED=ccache" "$BUILD_DIR/CMakeCache.txt" && ! grep -Fq "CMAKE_C_COMPILER_LAUNCHER:STRING=ccache" "$BUILD_DIR/CMakeCache.txt"; then

@@ -21,8 +21,8 @@ add_library(PoseidonOpenAL STATIC
     ${POSEIDON_OPENAL_HEADERS}
 )
 
-find_package(OpenAL CONFIG REQUIRED)
-set_target_properties(OpenAL::OpenAL PROPERTIES IMPORTED_GLOBAL TRUE)
+find_package(OpenAL CONFIG REQUIRED GLOBAL)
+target_link_libraries(PoseidonOpenAL PUBLIC OpenAL::OpenAL)
 
 target_link_libraries(PoseidonOpenAL PUBLIC Poseidon)
 

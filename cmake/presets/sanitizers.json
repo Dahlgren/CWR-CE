@@ -10,7 +10,8 @@
       "inherits": "base",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDLL"
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDLL",
+        "CONAN_INSTALL_ARGS": "--build=missing;-s=compiler.runtime=dynamic;-s=compiler.runtime_version=v143"
       }
     },
     {
@@ -18,20 +19,17 @@
       "displayName": "Win x64 Clang ASan+UBSan",
       "inherits": "win-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/win-x64-clang-san",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-windows-clang-san",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/win-x64-clang-san.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/toolchains/win-x64-clang-san.cmake"
     },
     {
       "name": "win-x64-clang-fuzz",
       "displayName": "Win x64 Clang libFuzzer + ASan (network)",
       "inherits": "win-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/win-x64-clang-fuzz",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/win-x64-clang-fuzz.cmake",
       "cacheVariables": {
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded",
-        "VCPKG_TARGET_TRIPLET": "x64-windows-clang-static",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/win-x64-clang-fuzz.cmake",
+        "CONAN_INSTALL_ARGS": "--build=missing;-s=compiler.runtime=static;-s=compiler.runtime_version=v143",
         "POSEIDON_BUILD_FUZZERS": "ON"
       }
     },
@@ -48,30 +46,23 @@
       "displayName": "Linux arm64 Clang ASan+UBSan",
       "inherits": "linux-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/linux-arm64-clang-san",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "arm64-linux-clang-san",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/linux-arm64-clang-san.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/toolchains/linux-arm64-clang-san.cmake"
     },
     {
       "name": "linux-arm64-clang-tsan",
       "displayName": "Linux arm64 Clang TSan",
       "inherits": "linux-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/linux-arm64-clang-tsan",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "arm64-linux-clang-tsan",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/linux-arm64-clang-tsan.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/toolchains/linux-arm64-clang-tsan.cmake"
     },
     {
       "name": "linux-x64-clang-fuzz",
       "displayName": "Linux x64 Clang libFuzzer + ASan",
       "inherits": "base",
       "binaryDir": "${sourceDir}/build/linux-x64-clang-fuzz",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/linux-x64-clang-fuzz.cmake",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-linux-clang",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/linux-x64-clang-fuzz.cmake",
         "POSEIDON_BUILD_FUZZERS": "ON"
       }
     },
@@ -80,20 +71,14 @@
       "displayName": "Linux x64 Clang ASan+UBSan",
       "inherits": "linux-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/linux-x64-clang-san",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-linux-clang-san",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/linux-x64-clang-san.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/toolchains/linux-x64-clang-san.cmake"
     },
     {
       "name": "linux-x64-clang-tsan",
       "displayName": "Linux x64 Clang TSan",
       "inherits": "linux-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/linux-x64-clang-tsan",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-linux-clang-tsan",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/linux-x64-clang-tsan.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/toolchains/linux-x64-clang-tsan.cmake"
     },
     {
       "name": "macos-clang-sanitizer",
@@ -108,40 +93,28 @@
       "displayName": "macOS arm64 Clang ASan+UBSan",
       "inherits": "macos-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/macos-arm64-clang-san",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "arm64-macos-clang-san",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/macos-arm64-clang-san.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/toolchains/macos-arm64-clang-san.cmake"
     },
     {
       "name": "macos-arm64-clang-tsan",
       "displayName": "macOS arm64 Clang TSan",
       "inherits": "macos-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/macos-arm64-clang-tsan",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "arm64-macos-clang-tsan",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/macos-arm64-clang-tsan.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/toolchains/macos-arm64-clang-tsan.cmake"
     },
     {
       "name": "macos-x64-clang-san",
       "displayName": "macOS x64 Clang ASan+UBSan",
       "inherits": "macos-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/macos-x64-clang-san",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-macos-clang-san",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/macos-x64-clang-san.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/toolchains/macos-x64-clang-san.cmake"
     },
     {
       "name": "macos-x64-clang-tsan",
       "displayName": "macOS x64 Clang TSan",
       "inherits": "macos-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/macos-x64-clang-tsan",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-macos-clang-tsan",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/macos-x64-clang-tsan.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/toolchains/macos-x64-clang-tsan.cmake"
     }
   ]
 }

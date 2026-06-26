@@ -553,7 +553,6 @@ target_link_libraries(PoseidonTests PRIVATE
     Poseidon
     PoseidonOpenAL
     PoseidonFormats
-    OpenAL::OpenAL
     Catch2::Catch2
 )
 

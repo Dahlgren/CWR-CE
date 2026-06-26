@@ -6,6 +6,40 @@
 #   dist_copy(TcPbo RENAME pbo${WCX_SUFFIX})             # copy with rename
 #   dist_copy(TcPbo EXTRA pluginst.inf)                  # copy extra file from source dir
 
+# Conan's CMakeDeps generator makes e.g. OpenAL::OpenAL an INTERFACE target
+# with no IMPORTED_LOCATION of its own; the real imported target (which does
+# carry IMPORTED_LOCATION[_<CONFIG>]) is reached only through
+# INTERFACE_LINK_LIBRARIES (named CONAN_LIB::<pkg>_<lib>_<CONFIG>). Walk that
+# indirection to find the actual shared library file on disk.
+function(_dist_copy_resolve_imported_location TARGET_NAME OUT_VAR)
+    if(NOT TARGET ${TARGET_NAME})
+        return()
+    endif()
+
+    get_target_property(_location ${TARGET_NAME} IMPORTED_LOCATION)
+    if(NOT _location AND CMAKE_BUILD_TYPE)
+        string(TOUPPER "${CMAKE_BUILD_TYPE}" _config_upper)
+        get_target_property(_location ${TARGET_NAME} IMPORTED_LOCATION_${_config_upper})
+    endif()
+    if(_location)
+        set(${OUT_VAR} "${_location}" PARENT_SCOPE)
+        return()
+    endif()
+
+    get_target_property(_link_libraries ${TARGET_NAME} INTERFACE_LINK_LIBRARIES)
+    if(_link_libraries)
+        string(REGEX MATCHALL "CONAN_LIB::[A-Za-z0-9_+.-]+" _candidates "${_link_libraries}")
+        list(REMOVE_DUPLICATES _candidates)
+        foreach(_candidate IN LISTS _candidates)
+            _dist_copy_resolve_imported_location(${_candidate} _resolved)
+            if(_resolved)
+                set(${OUT_VAR} "${_resolved}" PARENT_SCOPE)
+                return()
+            endif()
+        endforeach()
+    endif()
+endfunction()
+
 function(dist_copy TARGET)
     cmake_parse_arguments(ARG "" "RENAME" "EXTRA" ${ARGN})
 
@@ -58,10 +92,7 @@ function(dist_copy TARGET)
         endforeach()
     endif()
     if((WIN32 OR APPLE) AND TARGET OpenAL::OpenAL AND _copy_openal_runtime)
-        get_target_property(_openal_lib OpenAL::OpenAL IMPORTED_LOCATION)
-        if(NOT _openal_lib)
-            get_target_property(_openal_lib OpenAL::OpenAL IMPORTED_LOCATION_RELEASE)
-        endif()
+        _dist_copy_resolve_imported_location(OpenAL::OpenAL _openal_lib)
         if(_openal_lib AND (WIN32 AND _openal_lib MATCHES "\\.dll$") OR (APPLE AND _openal_lib MATCHES "\\.dylib$"))
             if(WIN32)
                 add_custom_command(TARGET ${TARGET} POST_BUILD
@@ -77,9 +108,11 @@ function(dist_copy TARGET)
                 )
             endif()
 
+            # Conan lays out openal-soft as <package_folder>/{bin,lib}/<file> and
+            # <package_folder>/licenses/COPYING.
             get_filename_component(_openal_bin_dir "${_openal_lib}" DIRECTORY)
-            get_filename_component(_openal_triplet_dir "${_openal_bin_dir}" DIRECTORY)
-            set(_openal_copyright "${_openal_triplet_dir}/share/openal-soft/copyright")
+            get_filename_component(_openal_package_dir "${_openal_bin_dir}" DIRECTORY)
+            set(_openal_copyright "${_openal_package_dir}/licenses/COPYING")
             if(EXISTS "${_openal_copyright}")
                 add_custom_command(TARGET ${TARGET} POST_BUILD
                     COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -90,7 +123,7 @@ function(dist_copy TARGET)
         endif()
         unset(_openal_lib)
         unset(_openal_bin_dir)
-        unset(_openal_triplet_dir)
+        unset(_openal_package_dir)
         unset(_openal_copyright)
     endif()
     unset(_copy_openal_runtime)
