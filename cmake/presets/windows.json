@@ -32,31 +32,19 @@
       "name": "win-x64-clang-dbg",
       "displayName": "Win x64 Clang Debug",
       "inherits": "win-clang-debug",
-      "binaryDir": "${sourceDir}/build/win-x64-clang-dbg",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-windows-clang",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/win-x64-clang.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/win-x64-clang-dbg"
     },
     {
       "name": "win-x64-clang-rwdi",
       "displayName": "Win x64 Clang RelWithDebInfo",
       "inherits": "win-clang-relwithdebinfo",
-      "binaryDir": "${sourceDir}/build/win-x64-clang-rwdi",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-windows-clang",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/win-x64-clang.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/win-x64-clang-rwdi"
     },
     {
       "name": "win-x64-clang-rel",
       "displayName": "Win x64 Clang Release",
       "inherits": "win-clang-release",
-      "binaryDir": "${sourceDir}/build/win-x64-clang-rel",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-windows-clang",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/win-x64-clang.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/win-x64-clang-rel"
     }
   ]
 }

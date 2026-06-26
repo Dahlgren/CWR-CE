@@ -22,7 +22,7 @@ add_library(PoseidonOpenAL STATIC
 )
 
 find_package(OpenAL CONFIG REQUIRED)
-set_target_properties(OpenAL::OpenAL PROPERTIES IMPORTED_GLOBAL TRUE)
+target_link_libraries(PoseidonOpenAL PUBLIC OpenAL::OpenAL)
 
 target_link_libraries(PoseidonOpenAL PUBLIC Poseidon)
 

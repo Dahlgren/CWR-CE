@@ -314,11 +314,34 @@ target_compile_definitions(Poseidon PUBLIC MI_STATIC_LIB)
 find_package(SDL3 CONFIG REQUIRED)
 target_link_libraries(Poseidon PUBLIC SDL3::SDL3)
 
-target_link_libraries(Poseidon PUBLIC enkiTS::enkiTS)
+target_link_libraries(Poseidon PUBLIC enkits::enkits)
 
 # ImGui — debug overlay (font tuner panel + GL3 backend hooks)
 find_package(imgui CONFIG REQUIRED)
 target_link_libraries(Poseidon PUBLIC imgui::imgui)
+
+# Conan ImgUi does not expose SDL3 bindings or FreeType
+add_library(PoseidonImgui STATIC
+    "${imgui_INCLUDE_DIR}/../res/bindings/imgui_impl_opengl3.cpp"
+    "${imgui_INCLUDE_DIR}/../res/bindings/imgui_impl_sdl3.cpp"
+    "${imgui_INCLUDE_DIR}/../res/bindings/imgui_impl_sdlrenderer3.cpp"
+    "${imgui_INCLUDE_DIR}/../res/misc/freetype/imgui_freetype.cpp"
+)
+target_include_directories(PoseidonImgui PUBLIC
+    "${imgui_INCLUDE_DIR}/../res/bindings"
+    "${imgui_INCLUDE_DIR}/../res/misc/freetype"
+)
+target_link_libraries(PoseidonImgui PUBLIC imgui::imgui Freetype::Freetype SDL3::SDL3)
+target_link_libraries(Poseidon PUBLIC PoseidonImgui)
+
+find_package(stb CONFIG REQUIRED)
+target_link_libraries(Poseidon PUBLIC stb::stb)
+
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm64)$")
+    # sse2neon - translates SSE intrinsics to NEON
+    find_package(sse2neon CONFIG REQUIRED)
+    target_link_libraries(Poseidon PUBLIC sse2neon)
+endif()
 
 # ============================================================
 # C++ Standard

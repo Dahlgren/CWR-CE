@@ -17,11 +17,7 @@
       "name": "win-x64-clang-san",
       "displayName": "Win x64 Clang ASan+UBSan",
       "inherits": "win-clang-sanitizer",
-      "binaryDir": "${sourceDir}/build/win-x64-clang-san",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-windows-clang-san",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/win-x64-clang-san.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/win-x64-clang-san"
     },
     {
       "name": "win-x64-clang-fuzz",
@@ -29,9 +25,8 @@
       "inherits": "win-clang-sanitizer",
       "binaryDir": "${sourceDir}/build/win-x64-clang-fuzz",
       "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/win-x64-clang-static.cmake",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded",
-        "VCPKG_TARGET_TRIPLET": "x64-windows-clang-static",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/win-x64-clang-fuzz.cmake",
         "POSEIDON_BUILD_FUZZERS": "ON"
       }
     },
@@ -50,8 +45,6 @@
       "binaryDir": "${sourceDir}/build/linux-x64-clang-fuzz",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-linux-clang",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/linux-x64-clang-fuzz.cmake",
         "POSEIDON_BUILD_FUZZERS": "ON"
       }
     },
@@ -59,21 +52,13 @@
       "name": "linux-x64-clang-san",
       "displayName": "Linux x64 Clang ASan+UBSan",
       "inherits": "linux-clang-sanitizer",
-      "binaryDir": "${sourceDir}/build/linux-x64-clang-san",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-linux-clang-san",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/linux-x64-clang-san.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/linux-x64-clang-san"
     },
     {
       "name": "linux-x64-clang-tsan",
       "displayName": "Linux x64 Clang TSan",
       "inherits": "linux-clang-sanitizer",
-      "binaryDir": "${sourceDir}/build/linux-x64-clang-tsan",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-linux-clang-tsan",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/linux-x64-clang-tsan.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/linux-x64-clang-tsan"
     },
     {
       "name": "darwin-clang-sanitizer",
@@ -87,41 +72,25 @@
       "name": "darwin-arm64-clang-san",
       "displayName": "Darwin arm64 Clang ASan+UBSan",
       "inherits": "darwin-clang-sanitizer",
-      "binaryDir": "${sourceDir}/build/darwin-arm64-clang-san",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "arm64-darwin-clang-san",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/darwin-arm64-clang-san.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/darwin-arm64-clang-san"
     },
     {
       "name": "darwin-arm64-clang-tsan",
       "displayName": "Darwin arm64 Clang TSan",
       "inherits": "darwin-clang-sanitizer",
-      "binaryDir": "${sourceDir}/build/darwin-arm64-clang-tsan",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "arm64-darwin-clang-tsan",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/darwin-arm64-clang-tsan.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/darwin-arm64-clang-tsan"
     },
     {
       "name": "darwin-x64-clang-san",
       "displayName": "Darwin x64 Clang ASan+UBSan",
       "inherits": "darwin-clang-sanitizer",
-      "binaryDir": "${sourceDir}/build/darwin-x64-clang-san",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-darwin-clang-san",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/darwin-x64-clang-san.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/darwin-x64-clang-san"
     },
     {
       "name": "darwin-x64-clang-tsan",
       "displayName": "Darwin x64 Clang TSan",
       "inherits": "darwin-clang-sanitizer",
-      "binaryDir": "${sourceDir}/build/darwin-x64-clang-tsan",
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-darwin-clang-tsan",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/darwin-x64-clang-tsan.cmake"
-      }
+      "binaryDir": "${sourceDir}/build/darwin-x64-clang-tsan"
     }
   ]
 }
