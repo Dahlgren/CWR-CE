@@ -42,10 +42,10 @@ jobs:
             build_dir: build/darwin-arm64-clang-rwdi
             ctest_exclude: 'PoseidonTests - OAL -|PoseidonFoundationTests - potime - Platform consistency|PoseidonFoundationTests - potime - Poseidon - Foundation - getSystemTime timing accuracy'
             artifact_prefix: 'macOS-arm64-rwdi'
-            dist_dir: dist/arm64-darwin-rwdi
-            game_artifact_path: dist/arm64-darwin-rwdi/PoseidonGame
-            game_demo_artifact_path: dist/arm64-darwin-rwdi/PoseidonGameDemo
-            server_artifact_path: dist/arm64-darwin-rwdi/PoseidonServer
+            dist_dir: dist/darwin-arm64-clang-rwdi
+            game_artifact_path: dist/darwin-arm64-clang-rwdi/PoseidonGame
+            game_demo_artifact_path: dist/darwin-arm64-clang-rwdi/PoseidonGameDemo
+            server_artifact_path: dist/darwin-arm64-clang-rwdi/PoseidonServer
           - name: macOS x64 RelWithDebInfo
             os: macos-26-intel
             preset: darwin-x64-clang-rwdi
@@ -53,10 +53,10 @@ jobs:
             build_dir: build/darwin-x64-clang-rwdi
             ctest_exclude: 'PoseidonTests - OAL -|PoseidonFoundationTests - potime - Platform consistency|PoseidonFoundationTests - potime - Poseidon - Foundation - getSystemTime timing accuracy'
             artifact_prefix: 'macOS-x64-rwdi'
-            dist_dir: dist/x64-darwin-rwdi
-            game_artifact_path: dist/x64-darwin-rwdi/PoseidonGame
-            game_demo_artifact_path: dist/x64-darwin-rwdi/PoseidonGameDemo
-            server_artifact_path: dist/x64-darwin-rwdi/PoseidonServer
+            dist_dir: dist/darwin-x64-clang-rwdi
+            game_artifact_path: dist/darwin-x64-clang-rwdi/PoseidonGame
+            game_demo_artifact_path: dist/darwin-x64-clang-rwdi/PoseidonGameDemo
+            server_artifact_path: dist/darwin-x64-clang-rwdi/PoseidonServer
           - name: Windows RelWithDebInfo
             os: windows-2022
             preset: win-x64-clang-rwdi
