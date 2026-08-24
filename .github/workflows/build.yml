@@ -171,15 +171,23 @@ jobs:
           if-no-files-found: error
 
   build-windows:
-    name: Windows RelWithDebInfo
-    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arm64
+            os: windows-11-arm
+          - arch: x64
+            os: windows-2022
+    name: Windows ${{ matrix.arch }} RelWithDebInfo
+    runs-on: ${{ matrix.os }}
     env:
-      CWR_PRESET: win-x64-clang-rwdi
-      CWR_VCPKG_TRIPLET: x64-windows-clang
-      CWR_BUILD_DIR: build/win-x64-clang-rwdi
+      CWR_PRESET: win-${{ matrix.arch }}-clang-rwdi
+      CWR_VCPKG_TRIPLET: ${{ matrix.arch }}-windows-clang
+      CWR_BUILD_DIR: build/win-${{ matrix.arch }}-clang-rwdi
       CWR_CTEST_EXCLUDE: 'PoseidonTests - (OAL -|PAAEncoder -|Image - Save to \.paa|World state file format --|PreviewImage - saveToFile writes|PreviewImageRGB - saveToFile writes)'
-      CWR_DIST_DIR: dist/x64-win-rwdi
-      CWR_ARTIFACT_PREFIX: Windows-x64-rwdi
+      CWR_DIST_DIR: dist/${{ matrix.arch }}-win-rwdi
+      CWR_ARTIFACT_PREFIX: Windows-${{ matrix.arch }}-rwdi
 
     steps:
       - name: Checkout

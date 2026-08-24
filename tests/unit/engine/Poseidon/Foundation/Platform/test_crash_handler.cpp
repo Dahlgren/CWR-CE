@@ -69,6 +69,8 @@ TEST_CASE("crash handler preserves the exception context in a minidump", "[platf
     const CONTEXT* context = reinterpret_cast<const CONTEXT*>(dump.data() + exception->ThreadContext.Rva);
 #if defined(_M_X64) || defined(__x86_64__)
     CHECK(context->Rip == exception->ExceptionRecord.ExceptionAddress);
+#elif defined(_M_ARM64) || defined(__aarch64__)
+    CHECK(context->Pc == exception->ExceptionRecord.ExceptionAddress);
 #else
     CHECK(context->Eip == exception->ExceptionRecord.ExceptionAddress);
 #endif

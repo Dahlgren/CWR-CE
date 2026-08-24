@@ -55,7 +55,6 @@ runs:
       uses: KyleMayes/install-llvm-action@v2
       with:
         version: '19'
-        arch: 'x64'
         directory: 'C:\Program Files\LLVM'
 
     - name: Setup compiler cache

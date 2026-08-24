@@ -107,6 +107,11 @@ LONG WINAPI CrashFilter(EXCEPTION_POINTERS* ep)
     frame.AddrPC.Offset = ctx->Rip;
     frame.AddrFrame.Offset = ctx->Rbp;
     frame.AddrStack.Offset = ctx->Rsp;
+#elif defined(_M_ARM64) || defined(__aarch64__)
+    constexpr DWORD machineType = IMAGE_FILE_MACHINE_ARM64;
+    frame.AddrPC.Offset = ctx->Pc;
+    frame.AddrFrame.Offset = ctx->Fp;
+    frame.AddrStack.Offset = ctx->Sp;
 #else
     constexpr DWORD machineType = IMAGE_FILE_MACHINE_I386;
     frame.AddrPC.Offset = ctx->Eip;

@@ -4,9 +4,6 @@ set(CMAKE_CXX_COMPILER clang++)
 # Native build - prevent CMake from treating this as cross-compilation
 set(CMAKE_CROSSCOMPILING FALSE)
 
-set(CMAKE_C_FLAGS_INIT   "-m64")
-set(CMAKE_CXX_FLAGS_INIT "-m64")
-
 # Ensure correct cpu type is set for libpng neon
 set(CMAKE_SYSTEM_PROCESSOR aarch64 CACHE STRING "")
 

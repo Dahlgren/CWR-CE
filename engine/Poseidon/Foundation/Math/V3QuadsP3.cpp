@@ -25,8 +25,8 @@
 #define _COMPILER_CAN_PIII 1
 #endif
 
-// MMX intrinsics not available on x64, disable PIII optimizations
-#if defined(_M_X64) || defined(_M_AMD64)
+// MMX intrinsics not available on x64 or arm64, disable PIII optimizations
+#if defined(_M_X64) || defined(_M_AMD64) || defined(_M_ARM64) || defined(__aarch64__)
 #undef _COMPILER_CAN_PIII
 #define _COMPILER_CAN_PIII 0
 #endif

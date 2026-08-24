@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-#ifdef _WIN32
+#if defined(_WIN32) && !(defined(_M_ARM64) || defined(__aarch64__))
 #include <intrin.h>
 #pragma intrinsic(__rdtsc)
 #endif
@@ -24,7 +24,9 @@ struct TerrainProfile {
     void Reset() { *this = {}; }
 
     static int64_t Now() {
-#ifdef _WIN32
+#if defined(_WIN32) && (defined(_M_ARM64) || defined(__aarch64__))
+        return static_cast<int64_t>(__builtin_arm_rsr64("CNTVCT_EL0"));
+#elif defined(_WIN32)
         return static_cast<int64_t>(__rdtsc());
 #elif defined(__x86_64__) || defined(__i386__)
         unsigned int lo, hi;
